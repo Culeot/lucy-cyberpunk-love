@@ -4,20 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>LUCY ♡ Cyberpunk Edgerunners</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
     --pink: #ff00ff;
     --cyan: #00ffff;
     --purple: #7b68ee;
-    --pink2: #ff6ec7;
-    --deep-pink: #ff1493;
-    --orange: #f67d50;
     --bg: #0a0a1a;
-    --bg-light: #141428;
-    --bg-card: rgba(20, 20, 40, 0.85);
     --text: #e0e0e0;
-    --text-dim: #888;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body {
@@ -27,208 +21,95 @@ html, body {
     font-family: 'Rajdhani', sans-serif;
     background: var(--bg); color: var(--text);
 }
-.scene-container { width: 100%; height: 100%; position: relative; overflow: hidden; }
+.scene-container { width: 100%; height: 100%; position: relative; }
 .scene {
     position: absolute; top: 0; left: 0;
     width: 100%; height: 100%;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
     opacity: 0; transform: translateY(20px);
     transition: opacity 0.8s ease, transform 0.8s ease;
-    pointer-events: none; padding: 28px 20px;
-    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    pointer-events: none;
     visibility: hidden;
+    background-size: cover;
+    background-position: center;
 }
 .scene.active { opacity: 1; transform: translateY(0); pointer-events: all; visibility: visible; }
-.scene-content { max-width: 420px; width: 100%; text-align: center; position: relative; z-index: 2; }
-
-/* === SYNTHWAVE BACKGROUND === */
-body::before {
-    content: ''; position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%; pointer-events: none; z-index: 0;
-    background:
-        radial-gradient(ellipse at 50% 100%, rgba(255,0,255,0.15) 0%, transparent 60%),
-        radial-gradient(ellipse at 20% 80%, rgba(0,255,255,0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(123,104,238,0.08) 0%, transparent 50%);
-}
-body::after {
-    content: ''; position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%; pointer-events: none; z-index: 0;
-    background-image:
-        linear-gradient(rgba(255,0,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,0,255,0.04) 1px, transparent 1px);
-    background-size: 50px 50px;
-    mask-image: linear-gradient(to bottom, transparent 30%, black 70%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 30%, black 70%);
+.scene-content {
+    position: absolute; bottom: 100px; left: 0; right: 0;
+    text-align: center; z-index: 2;
+    padding: 20px;
 }
 
-/* === NEON TEXT === */
-.neon-pink {
-    color: var(--pink);
-    text-shadow: 0 0 10px var(--pink), 0 0 20px rgba(255,0,255,0.5), 0 0 40px rgba(255,0,255,0.3);
-}
-.neon-cyan {
-    color: var(--cyan);
-    text-shadow: 0 0 10px var(--cyan), 0 0 20px rgba(0,255,255,0.5);
+/* === FULL SCENE BACKGROUNDS === */
+#cover { background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%); }
+#scene1 { background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%); }
+#scene2 { background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%); }
+#scene3 { background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%); }
+#scene4 { background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%); }
+#scene5 { background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%); }
+#heart { background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%); }
+#action { background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%); }
+
+/* === CHARACTER OVERLAY === */
+.character-overlay {
+    position: absolute; bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%; height: 80%;
+    background-size: contain;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    z-index: 1; pointer-events: none;
 }
 
-/* === COVER === */
-.cover-char {
-    width: 200px; height: 280px;
-    margin: 0 auto 16px;
-    position: relative;
-    border: 2px solid var(--pink);
-    box-shadow: 0 0 20px rgba(255,0,255,0.4), inset 0 0 20px rgba(255,0,255,0.1);
-    overflow: hidden;
-    border-radius: 4px;
+/* === TEXT OVERLAY (no boxes) === */
+.scene-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(1rem, 3.5vw, 1.3rem);
+    line-height: 1.8; color: var(--text);
+    text-shadow: 0 0 10px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5);
+    max-width: 600px; margin: 0 auto;
 }
-.cover-char img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    filter: brightness(0.9) contrast(1.1) saturate(1.2);
-}
-.cover-char::after {
-    content: ''; position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(180deg, transparent 60%, rgba(255,0,255,0.1) 100%);
-    pointer-events: none;
-}
-.cover-title {
+.scene-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(2rem, 7vw, 3rem);
-    font-weight: 900;
-    color: var(--pink);
-    text-shadow: 0 0 15px var(--pink), 0 0 30px rgba(255,0,255,0.6);
-    margin-bottom: 6px; letter-spacing: 4px;
-}
-.cover-subtitle {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: clamp(0.6rem, 2vw, 0.8rem);
-    color: var(--cyan);
-    letter-spacing: 4px; margin-bottom: 20px;
-    text-shadow: 0 0 8px rgba(0,255,255,0.5);
-}
-.cover-btn {
-    display: inline-block; padding: 12px 40px;
-    background: transparent; border: 2px solid var(--pink);
-    color: var(--pink); font-family: 'Orbitron', sans-serif;
-    font-size: 0.85rem; letter-spacing: 3px; cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(255,0,255,0.3), inset 0 0 10px rgba(255,0,255,0.1);
-    text-shadow: 0 0 8px var(--pink);
-}
-.cover-btn:hover { background: var(--pink); color: var(--bg); box-shadow: 0 0 30px var(--pink); }
-
-/* === TEXT SCENES === */
-.text-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(1.3rem, 4.5vw, 1.7rem);
-    color: var(--pink); margin-bottom: 14px;
-    text-shadow: 0 0 10px rgba(255,0,255,0.5);
-}
-.text-body {
-    font-size: clamp(0.85rem, 2.8vw, 0.95rem); line-height: 2;
-    color: var(--text); text-align: left;
-    padding: 24px 20px;
-    background: var(--bg-card);
-    border: 1px solid rgba(255,0,255,0.2);
-    position: relative;
-    backdrop-filter: blur(4px);
-}
-.text-body::before {
-    content: ''; position: absolute;
-    top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--pink), transparent);
-}
-.text-signature {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.9rem; color: var(--cyan);
-    margin-top: 14px; text-align: right;
-    text-shadow: 0 0 8px rgba(0,255,255,0.4);
+    font-size: clamp(1.8rem, 6vw, 3rem);
+    font-weight: 900; color: var(--cyan);
+    text-shadow: 0 0 15px rgba(0,255,255,0.5), 0 0 30px rgba(0,255,255,0.3);
+    margin-bottom: 16px; letter-spacing: 3px;
 }
 
-/* === MOON SCENE === */
-.moon-visual {
-    width: 120px; height: 120px;
-    border-radius: 50%;
+/* === MOON === */
+.moon {
+    position: absolute; top: 15%; right: 15%;
+    width: 100px; height: 100px; border-radius: 50%;
     background: radial-gradient(circle at 35% 35%, #FFF, #E8E0C0 40%, #C8B888 70%, #A09060);
-    margin: 0 auto 16px;
-    box-shadow: 0 0 40px rgba(255,250,205,0.4), 0 0 80px rgba(255,250,205,0.2);
-    position: relative;
-    animation: moonGlow 3s ease-in-out infinite;
+    box-shadow: 0 0 60px rgba(255,250,205,0.5), 0 0 120px rgba(255,250,205,0.3);
+    animation: moonGlow 4s ease-in-out infinite;
+    z-index: 0;
 }
 @keyframes moonGlow {
-    0%, 100% { box-shadow: 0 0 40px rgba(255,250,205,0.4), 0 0 80px rgba(255,250,205,0.2); }
-    50% { box-shadow: 0 0 60px rgba(255,250,205,0.6), 0 0 120px rgba(255,250,205,0.3); }
+    0%,100% { box-shadow: 0 0 60px rgba(255,250,205,0.5), 0 0 120px rgba(255,250,205,0.3); }
+    50% { box-shadow: 0 0 80px rgba(255,250,205,0.7), 0 0 160px rgba(255,250,205,0.4); }
 }
 
-/* === PHOTO GRID === */
-.photos-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(1.1rem, 3.5vw, 1.5rem);
-    color: var(--pink); margin-bottom: 14px;
-    text-shadow: 0 0 10px rgba(255,0,255,0.5);
-}
-.photo-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-    width: 100%;
-}
-.photo-item {
-    aspect-ratio: 1;
-    overflow: hidden;
-    border: 1px solid rgba(255,0,255,0.2);
-    position: relative;
-}
-.photo-item img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    filter: brightness(0.85) contrast(1.1) saturate(1.2);
-    transition: transform 0.3s ease;
-}
-.photo-item:hover img { transform: scale(1.05); }
-.photo-item::after {
-    content: ''; position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    border: 1px solid rgba(255,0,255,0.1);
-    pointer-events: none;
+/* === NEON BORDER (minimal, only on active elements) */
+.neon-border {
+    border: 1px solid rgba(0,255,255,0.3);
+    box-shadow: 0 0 10px rgba(0,255,255,0.1);
 }
 
-/* === HEART DRAW === */
-.heart-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(1.2rem, 4vw, 1.6rem);
-    color: var(--pink); margin-bottom: 6px;
-    text-shadow: 0 0 10px rgba(255,0,255,0.5);
-}
-.heart-instruction {
-    font-size: 0.72rem; color: var(--text-dim);
-    margin-bottom: 10px; line-height: 1.5;
-}
-.canvas-area {
-    display: flex; align-items: center;
-    justify-content: center; gap: 6px;
-}
-.deco-side {
-    font-size: 1.1rem; color: var(--pink);
-    opacity: 0.5; user-select: none;
-    pointer-events: none; letter-spacing: 2px;
-}
+/* === HEART CANVAS === */
 .canvas-wrapper {
     position: relative; width: 280px; height: 220px;
+    margin: 0 auto;
     border-radius: 4px; overflow: hidden;
-    box-shadow: 0 0 0 1px rgba(255,0,255,0.2), 0 0 20px rgba(255,0,255,0.15);
+    box-shadow: 0 0 0 1px rgba(0,255,255,0.2), 0 0 20px rgba(0,255,255,0.1);
 }
 #heartCanvas {
     display: block; width: 280px; height: 220px;
     touch-action: none; cursor: crosshair;
-    border-radius: 4px;
 }
 .completion-overlay {
     position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(10,10,26,0.92);
-    backdrop-filter: blur(4px);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     gap: 12px; padding: 16px;
@@ -246,11 +127,12 @@ body::after {
 .heart-controls {
     display: flex; justify-content: center;
     gap: 10px; align-items: center;
-    flex-wrap: wrap; margin-top: 8px;
+    flex-wrap: wrap; margin-top: 10px;
 }
 .heart-progress {
-    font-size: 0.7rem; color: var(--text-dim);
+    font-size: 0.72rem; color: var(--text);
     letter-spacing: 1px; min-width: 70px;
+    text-shadow: 0 0 8px rgba(0,0,0,0.8);
 }
 .completion-overlay .heart-btn {
     padding: 8px 28px;
@@ -261,39 +143,12 @@ body::after {
     box-shadow: 0 4px 16px rgba(255,0,255,0.4);
     transition: all 0.3s ease; display: inline-block;
 }
-.completion-overlay .heart-btn:hover { box-shadow: 0 6px 24px rgba(255,0,255,0.6); }
 .redraw-btn {
-    padding: 7px 18px; background: transparent;
-    border: 1.5px solid rgba(255,0,255,0.3);
-    color: var(--pink); font-family: 'Rajdhani', sans-serif;
+    padding: 7px 18px; background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(0,255,255,0.3);
+    color: var(--cyan); font-family: 'Rajdhani', sans-serif;
     font-size: 0.78rem; letter-spacing: 1px;
     cursor: pointer; transition: all 0.3s ease;
-}
-
-/* === ACTION === */
-.action-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(1.6rem, 5vw, 2.4rem);
-    color: var(--pink); margin-bottom: 14px;
-    text-shadow: 0 0 15px rgba(255,0,255,0.6);
-}
-.action-text {
-    font-size: clamp(0.85rem, 2.8vw, 0.95rem);
-    line-height: 2; color: var(--text);
-    margin-bottom: 18px; padding: 18px;
-    background: var(--bg-card);
-    border: 1px solid rgba(0,255,255,0.2);
-    position: relative;
-}
-.action-text::before {
-    content: ''; position: absolute;
-    top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-}
-.action-date {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem; color: var(--cyan);
-    letter-spacing: 3px;
 }
 
 /* === NEXT BUTTON === */
@@ -302,16 +157,16 @@ body::after {
     transform: translateX(-50%);
     padding: 10px 32px;
     background: rgba(10,10,26,0.7);
-    border: 1.5px solid var(--pink);
-    color: var(--pink); font-family: 'Orbitron', sans-serif;
+    border: 1.5px solid var(--cyan);
+    color: var(--cyan); font-family: 'Orbitron', sans-serif;
     font-size: 0.8rem; letter-spacing: 2px;
     cursor: pointer; z-index: 100;
     backdrop-filter: blur(4px);
     border-radius: 20px;
     transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(255,0,255,0.3);
+    text-shadow: 0 0 8px rgba(0,255,255,0.4);
 }
-.next-btn:hover { background: var(--pink); color: var(--bg); box-shadow: 0 0 25px var(--pink); }
+.next-btn:hover { background: var(--cyan); color: var(--bg); box-shadow: 0 0 20px var(--cyan); }
 .next-btn.hidden { opacity: 0; pointer-events: none; }
 
 /* === NAV DOTS === */
@@ -324,145 +179,109 @@ body::after {
 }
 .nav-dot {
     width: 4px; height: 4px; border-radius: 50%;
-    background: rgba(255,0,255,0.3); transition: all 0.3s ease;
+    background: rgba(0,255,255,0.3); transition: all 0.3s ease;
     cursor: pointer;
 }
-.nav-dot.active { background: var(--pink); width: 14px; border-radius: 2px; }
-
-/* === SCANLINES === */
-.scanlines {
-    position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none; z-index: 9998;
-    background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.03) 2px,
-        rgba(0,0,0,0.03) 4px
-    );
-}
+.nav-dot.active { background: var(--cyan); width: 14px; border-radius: 2px; }
 
 /* === RESPONSIVE === */
 @media (max-width: 380px) {
-    .scene { padding: 20px 14px; }
-    .cover-char { width: 160px; height: 230px; }
+    .scene-content { bottom: 80px; padding: 16px; }
     .canvas-wrapper, #heartCanvas { width: 260px; height: 200px; }
 }
 </style>
 </head>
 <body>
 
-<div class="scanlines"></div>
-
 <div class="scene-container" id="sceneContainer">
 
-    <!-- COVER -->
+    <!-- COVER: Moon Scene Full Screen -->
     <div class="scene active" id="cover">
+        <div class="moon"></div>
+        <div class="character-overlay" style="background-image:url('https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg');opacity:0.3;"></div>
         <div class="scene-content">
-            <div class="cover-char">
-                <img src="https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg" alt="Lucy" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#ff00ff);display:flex;align-items:center;justify-content:center;color:#ff00ff;font-size:3rem;\'>♡</div>'">
-            </div>
-            <div class="cover-title">LUCY</div>
-            <div class="cover-subtitle">CYBERPUNK: EDGERUNNERS</div>
-            <button class="cover-btn" onclick="nextScene()">ENTER ❦</button>
+            <div class="scene-title">LUCY</div>
+            <div class="scene-text">CYBERPUNK: EDGERUNNERS</div>
+            <button class="cover-btn" onclick="nextScene()" style="margin-top:20px;padding:12px 40px;background:transparent;border:2px solid var(--cyan);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.85rem;letter-spacing:3px;cursor:pointer;text-shadow:0 0 8px var(--cyan);">ENTER ❦</button>
         </div>
     </div>
 
-    <!-- TEXT 1 -->
-    <div class="scene text-scene" id="text1">
+    <!-- SCENE 1: Lucy Character Full Page -->
+    <div class="scene" id="scene1">
+        <div class="character-overlay" style="background-image:url('https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg');opacity:0.4;"></div>
         <div class="scene-content">
-            <div class="text-title">The Netrunner</div>
-            <div class="text-body">
-She moves through the net like a ghost — silent, precise, untouchable.
-
-Lucy is more than a hacker. She's a survivor who chose to keep living, even when the world gave her every reason not to.
-
-In a city that eats the weak, she became the predator.
-            </div>
-            <div class="text-signature">— a fan</div>
-        </div>
-    </div>
-
-    <!-- TEXT 2 -->
-    <div class="scene text-scene" id="text2">
-        <div class="scene-content">
-            <div class="text-title">Still Running</div>
-            <div class="text-body">
-Years later, I still think about her.
-
-The way she danced through firewalls. The way she smiled when she thought no one was watching. The way she chose hope, even at the end.
-
-Some characters stay with you. Lucy is one of them.
-            </div>
-            <div class="text-signature">— a fan ♡</div>
-        </div>
-    </div>
-
-    <!-- MOON SCENE -->
-    <div class="scene" id="moon">
-        <div class="scene-content">
-            <div class="moon-visual"></div>
-            <div class="text-title">The Moon</div>
-            <div class="text-body">
-She always said she wanted to go to the moon.
-
-In Night City, where neon bleeds into darkness and dreams go to die, she dared to want something quiet.
-
-If she's up there now, I hope it's peaceful. I hope she found the silence she was looking for.
-            </div>
-            <div class="text-signature">— a fan ♡</div>
-        </div>
-    </div>
-
-    <!-- PHOTO GRID -->
-    <div class="scene" id="photos">
-        <div class="scene-content">
-            <div class="photos-title">Her World</div>
-            <div class="photo-grid">
-                <div class="photo-item"><img src="https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg" alt="1" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#ff00ff);display:flex;align-items:center;justify-content:center;color:#ff00ff;\'>♡</div>'"></div>
-                <div class="photo-item"><img src="https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg" alt="2" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#0a0a1a,#00ffff);display:flex;align-items:center;justify-content:center;color:#00ffff;\'>♡</div>'"></div>
-                <div class="photo-item"><img src="https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg" alt="3" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#141428,#ff00ff);display:flex;align-items:center;justify-content:center;color:#ff00ff;\'>♡</div>'"></div>
-                <div class="photo-item"><img src="https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg" alt="4" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#ff6ec7);display:flex;align-items:center;justify-content:center;color:#ff6ec7;\'>♡</div>'"></div>
-                <div class="photo-item"><img src="https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg" alt="5" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#0a0a1a,#7b68ee);display:flex;align-items:center;justify-content:center;color:#7b68ee;\'>♡</div>'"></div>
-                <div class="photo-item"><img src="https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg" alt="6" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#141428,#00ffff);display:flex;align-items:center;justify-content:center;color:#00ffff;\'>♡</div>'"></div>
-                <div class="photo-item"><img src="https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg" alt="7" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#ff1493);display:flex;align-items:center;justify-content:center;color:#ff1493;\'>♡</div>'"></div>
-                <div class="photo-item"><img src="https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg" alt="8" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#0a0a1a,#f67d50);display:flex;align-items:center;justify-content:center;color:#f67d50;\'>♡</div>'"></div>
-                <div class="photo-item"><img src="https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg" alt="9" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#141428,#ff00ff);display:flex;align-items:center;justify-content:center;color:#ff00ff;\'>♡</div>'"></div>
+            <div class="scene-title">The Netrunner</div>
+            <div class="scene-text">
+                She moves through the net like a ghost, silent, precise, untouchable.<br><br>
+                Lucy is more than a hacker. She's a survivor who chose to keep living, even when the world gave her every reason not to.
             </div>
         </div>
     </div>
 
-    <!-- TEXT 3 -->
-    <div class="scene text-scene" id="text3">
+    <!-- SCENE 2: Night City Full Page -->
+    <div class="scene" id="scene2">
+        <div class="character-overlay" style="background-image:url('https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg');opacity:0.25;"></div>
         <div class="scene-content">
-            <div class="text-title">Night City</div>
-            <div class="text-body">
-The city never sleeps. It just waits.
-
-Waits for the next dreamer to come chasing neon lights. Waits for the next soul to get swallowed by its glow.
-
-Lucy saw through it. She knew the game was rigged. And she played anyway — not to win, but to choose her own ending.
+            <div class="scene-title">Night City</div>
+            <div class="scene-text">
+                The city never sleeps. It just waits.<br><br>
+                Waits for the next dreamer to come chasing neon lights. Waits for the next soul to get swallowed by its glow.<br><br>
+                Lucy saw through it. She knew the game was rigged. And she played anyway, not to win, but to choose her own ending.
             </div>
-            <div class="text-signature">— a fan ♡</div>
         </div>
     </div>
 
-    <!-- HEART DRAW -->
+    <!-- SCENE 3: Moon Scene Full Page -->
+    <div class="scene" id="scene3">
+        <div class="moon" style="top:10%;right:10%;width:150px;height:150px;"></div>
+        <div class="character-overlay" style="background-image:url('https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg');opacity:0.2;"></div>
+        <div class="scene-content">
+            <div class="scene-title">The Moon</div>
+            <div class="scene-text">
+                She always said she wanted to go to the moon.<br><br>
+                In Night City, where neon bleeds into darkness and dreams go to die, she dared to want something quiet.<br><br>
+                If she's up there now, I hope it's peaceful. I hope she found the silence she was looking for.
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 4: Character Gallery Full Page -->
+    <div class="scene" id="scene4">
+        <div class="character-overlay" style="background-image:url('https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg');opacity:0.5;"></div>
+        <div class="scene-content">
+            <div class="scene-title">Her World</div>
+            <div class="scene-text">
+                Every screenshot, every frame, every moment she's on screen. She steals the show.<br><br>
+                Lucy isn't just a character. She's a feeling you can't shake.
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENE 5: Emotional Full Page -->
+    <div class="scene" id="scene5">
+        <div class="character-overlay" style="background-image:url('https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg');opacity:0.3;"></div>
+        <div class="scene-content">
+            <div class="scene-title">Still Running</div>
+            <div class="scene-text">
+                Years later, I still think about her.<br><br>
+                The way she danced through firewalls. The way she smiled when she thought no one was watching.<br><br>
+                Some characters stay with you. Lucy is one of them.
+            </div>
+        </div>
+    </div>
+
+    <!-- HEART DRAW with Character Background -->
     <div class="scene" id="heart">
-        <div class="scene-content">
-            <div class="heart-title">Draw Your Heart</div>
-            <div class="heart-instruction">Trace the heart's outline from outer to inner.<br>The more you trace, the more it fills. ♡</div>
-            <div class="canvas-area">
-                <span class="deco-side">🌸 ✨</span>
-                <div class="canvas-wrapper" id="canvasWrapper">
-                    <canvas id="heartCanvas" width="280" height="220"></canvas>
-                    <div class="completion-overlay" id="completionOverlay">
-                        <div class="completion-text">You drew it. Just like she drew us in — completely. ♡</div>
-                        <button class="heart-btn" id="heartBtn" onclick="nextScene()">Continue ♡</button>
-                    </div>
+        <div class="character-overlay" style="background-image:url('https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg');opacity:0.15;"></div>
+        <div class="scene-content" style="bottom:120px;">
+            <div class="scene-title" style="font-size:clamp(1.2rem,4vw,1.8rem);">Draw Your Heart</div>
+            <div class="scene-text" style="font-size:0.85rem;margin-bottom:10px;">Trace the outline from outer to inner. Fill it with love. ♡</div>
+            <div class="canvas-wrapper">
+                <canvas id="heartCanvas" width="280" height="220"></canvas>
+                <div class="completion-overlay" id="completionOverlay">
+                    <div class="completion-text">You drew it. Just like she drew us in, completely. ♡</div>
+                    <button class="heart-btn" id="heartBtn" onclick="nextScene()">Continue ♡</button>
                 </div>
-                <span class="deco-side">✨ ♡</span>
             </div>
             <div class="heart-controls">
                 <span class="heart-progress" id="heartProgress">0% ♡</span>
@@ -471,16 +290,17 @@ Lucy saw through it. She knew the game was rigged. And she played anyway — not
         </div>
     </div>
 
-    <!-- ACTION -->
+    <!-- ACTION: Final Full Page -->
     <div class="scene" id="action">
+        <div class="moon"></div>
+        <div class="character-overlay" style="background-image:url('https://cdn.akamai.steamstatic.com/steam/apps/2012840/header.jpg');opacity:0.25;"></div>
         <div class="scene-content">
-            <div class="action-title">FOR LUCY</div>
-            <div class="action-text">
-Some characters stay with you forever.<br><br>
-Lucy is one of them.<br><br>
-Thank you for the run.
+            <div class="scene-title">FOR LUCY</div>
+            <div class="scene-text">
+                Some characters stay with you forever.<br><br>
+                Lucy is one of them.<br><br>
+                Thank you for the run.
             </div>
-            <div class="action-date">NIGHT CITY — FOREVER</div>
         </div>
     </div>
 
@@ -495,7 +315,7 @@ Thank you for the run.
 </audio>
 
 <script>
-const scenes = ['cover','text1','text2','moon','photos','text3','heart','action'];
+const scenes = ['cover','scene1','scene2','scene3','scene4','scene5','heart','action'];
 let currentScene = 0;
 
 function showScene(idx) {
@@ -514,7 +334,6 @@ function showScene(idx) {
 
 function nextScene() { if (currentScene < scenes.length - 1) showScene(currentScene + 1); }
 
-// Nav dots
 const navDots = document.getElementById('navDots');
 scenes.forEach((s, i) => {
     const dot = document.createElement('div');
@@ -523,7 +342,6 @@ scenes.forEach((s, i) => {
     navDots.appendChild(dot);
 });
 
-// BGM - play on first interaction
 document.addEventListener('click', () => {
     const bgm = document.getElementById('bgm');
     if (bgm && bgm.paused) bgm.play().catch(() => {});
@@ -554,21 +372,12 @@ document.addEventListener('click', () => {
 
     function heartX(t) { return 16 * Math.pow(Math.sin(t), 3); }
     function heartY(t) { return 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t); }
-    function paramToCanvas(t, scale) {
-        return { x: HEART_CX + heartX(t) * scale, y: HEART_CY - (heartY(t) + HEART_OY) * scale };
-    }
+    function paramToCanvas(t, scale) { return { x: HEART_CX + heartX(t) * scale, y: HEART_CY - (heartY(t) + HEART_OY) * scale }; }
 
     function generateUniformSamples(numSamples, scale) {
         const dense = [];
-        for (let i = 0; i <= DENSE_SAMPLE_COUNT; i++) {
-            const t = (i / DENSE_SAMPLE_COUNT) * 2 * Math.PI;
-            dense.push({ t, x: heartX(t), y: heartY(t) });
-        }
-        const cumArc = [0];
-        for (let i = 1; i <= DENSE_SAMPLE_COUNT; i++) {
-            const dx = dense[i].x - dense[i-1].x, dy = dense[i].y - dense[i-1].y;
-            cumArc.push(cumArc[i-1] + Math.sqrt(dx*dx + dy*dy));
-        }
+        for (let i = 0; i <= DENSE_SAMPLE_COUNT; i++) { const t = (i / DENSE_SAMPLE_COUNT) * 2 * Math.PI; dense.push({ t, x: heartX(t), y: heartY(t) }); }
+        const cumArc = [0]; for (let i = 1; i <= DENSE_SAMPLE_COUNT; i++) { const dx = dense[i].x - dense[i-1].x, dy = dense[i].y - dense[i-1].y; cumArc.push(cumArc[i-1] + Math.sqrt(dx*dx + dy*dy)); }
         const totalArc = cumArc[DENSE_SAMPLE_COUNT];
         const samples = [];
         for (let i = 0; i < numSamples; i++) {
@@ -593,7 +402,7 @@ document.addEventListener('click', () => {
 
     function updateUnlocks() {
         const rate0 = layerHitCount[0] / heartLayers[0].length;
-        if (rate0 >= UNLOCK_THRESHOLD && !layerActive[1]) { layerActive[1] = true; showGuide('Beautiful — trace deeper', 80); }
+        if (rate0 >= UNLOCK_THRESHOLD && !layerActive[1]) { layerActive[1] = true; showGuide('Beautiful, trace deeper', 80); }
         const rate1 = layerHitCount[1] / heartLayers[1].length;
         if (rate1 >= UNLOCK_THRESHOLD && !layerActive[2]) { layerActive[2] = true; showGuide('One more layer, love', 80); }
         if (!completed && progress >= 0.72 && progress < COMPLETE_THRESHOLD) showGuide('Almost there...', 50);
@@ -639,7 +448,6 @@ document.addEventListener('click', () => {
     }
 
     function getCanvasCoords(cx, cy) { const rect = canvas.getBoundingClientRect(); return {x:(cx-rect.left)*(CANVAS_W/rect.width), y:(cy-rect.top)*(CANVAS_H/rect.height)}; }
-
     function handleStart(cx, cy) { if (completed) return; isDrawing = true; lastStrokePoint = null; const pos = getCanvasCoords(cx, cy); addStrokePoint(pos.x, pos.y); }
     function handleMove(cx, cy) { if (!isDrawing || completed) return; const pos = getCanvasCoords(cx, cy); addStrokePoint(pos.x, pos.y); }
     function handleEnd() { isDrawing = false; lastStrokePoint = null; }
@@ -668,17 +476,17 @@ document.addEventListener('click', () => {
 
     function renderBackground() {
         const grad = ctx.createLinearGradient(0,0,0,CANVAS_H);
-        grad.addColorStop(0,'#0a0a1a'); grad.addColorStop(0.5,'#141428'); grad.addColorStop(1,'#0a0a1a');
+        grad.addColorStop(0,'rgba(10,10,26,0.9)'); grad.addColorStop(0.5,'rgba(20,20,40,0.85)'); grad.addColorStop(1,'rgba(10,10,26,0.9)');
         ctx.fillStyle = grad; ctx.fillRect(0,0,CANVAS_W,CANVAS_H);
-        ctx.save(); ctx.strokeStyle='rgba(255,0,255,0.25)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+        ctx.save(); ctx.strokeStyle='rgba(0,255,255,0.15)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
         ctx.beginPath(); ctx.rect(3,3,CANVAS_W-6,CANVAS_H-6); ctx.stroke(); ctx.restore();
-        ctx.save(); ctx.strokeStyle='rgba(255,0,255,0.1)'; ctx.lineWidth=1.5; ctx.setLineDash([6,6]);
+        ctx.save(); ctx.strokeStyle='rgba(0,255,255,0.08)'; ctx.lineWidth=1.5; ctx.setLineDash([6,6]);
         ctx.stroke(createHeartPath(OUTER_SCALE)); ctx.restore(); ctx.setLineDash([]);
     }
 
     function renderHeartLayer(li) {
         const pts = heartLayers[li], active = layerActive[li];
-        const cfgs = [{b:'#ff00ff',d:'rgba(255,0,255,0.2)',lw:3.0,dw:1.8,g:8},{b:'#ff00ff',d:'rgba(255,0,255,0.15)',lw:2.4,dw:1.4,g:6},{b:'#ff00ff',d:'rgba(255,0,255,0.1)',lw:2.0,dw:1.0,g:5}];
+        const cfgs = [{b:'#00ffff',d:'rgba(0,255,255,0.2)',lw:3.0,dw:1.8,g:8},{b:'#00ffff',d:'rgba(0,255,255,0.15)',lw:2.4,dw:1.4,g:6},{b:'#00ffff',d:'rgba(0,255,255,0.1)',lw:2.0,dw:1.0,g:5}];
         const c = cfgs[li];
         ctx.save(); ctx.lineCap='round'; ctx.lineJoin='round';
         for (let i = 0; i < pts.length; i++) {
@@ -686,7 +494,7 @@ document.addEventListener('click', () => {
             const both = p1.hit && p2.hit;
             ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y);
             if (both && active) { ctx.strokeStyle=c.b; ctx.lineWidth=c.lw; ctx.shadowBlur=c.g; ctx.shadowColor=c.b; ctx.setLineDash([]); }
-            else { ctx.strokeStyle = active ? c.d : 'rgba(255,0,255,0.05)'; ctx.lineWidth = active ? c.dw : 0.5; ctx.shadowBlur=0; ctx.setLineDash([3,5]); }
+            else { ctx.strokeStyle = active ? c.d : 'rgba(0,255,255,0.05)'; ctx.lineWidth = active ? c.dw : 0.5; ctx.shadowBlur=0; ctx.setLineDash([3,5]); }
             ctx.stroke();
         }
         ctx.restore(); ctx.shadowBlur=0; ctx.setLineDash([]);
@@ -700,7 +508,7 @@ document.addEventListener('click', () => {
             const alpha = Math.max(0, Math.min(1, p2.alpha));
             if (alpha <= 0.01) continue;
             ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y);
-            ctx.strokeStyle=`rgba(255,0,255,${alpha})`; ctx.lineWidth=3; ctx.shadowBlur=4; ctx.shadowColor=`rgba(255,0,255,${alpha*0.5})`; ctx.stroke();
+            ctx.strokeStyle=`rgba(0,255,255,${alpha})`; ctx.lineWidth=3; ctx.shadowBlur=4; ctx.shadowColor=`rgba(0,255,255,${alpha*0.5})`; ctx.stroke();
         }
         ctx.restore(); ctx.shadowBlur=0;
     }
@@ -714,13 +522,13 @@ document.addEventListener('click', () => {
         if (displayP > 0.01) {
             const fw = barW * displayP;
             const fg = ctx.createLinearGradient(barX,barY,barX+barW,barY);
-            fg.addColorStop(0,'#ff00ff'); fg.addColorStop(1,'#7b68ee');
-            ctx.fillStyle=fg; ctx.shadowBlur=6; ctx.shadowColor='rgba(255,0,255,0.4)';
+            fg.addColorStop(0,'#00ffff'); fg.addColorStop(1,'#7b68ee');
+            ctx.fillStyle=fg; ctx.shadowBlur=6; ctx.shadowColor='rgba(0,255,255,0.4)';
             ctx.beginPath(); ctx.roundRect(barX,barY,Math.max(fw,3),barH,2.5); ctx.fill(); ctx.shadowBlur=0;
         }
         const pct = Math.round(displayP*100);
         ctx.font='10px "Orbitron",monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
-        ctx.fillStyle='rgba(255,255,255,0.75)'; ctx.fillText(pct+'%', CANVAS_W/2, barY-8);
+        ctx.fillStyle='rgba(255,255,255,0.8)'; ctx.fillText(pct+'%', CANVAS_W/2, barY-8);
         ctx.restore();
         document.getElementById('heartProgress').textContent = pct + '% ♡';
     }
@@ -728,7 +536,7 @@ document.addEventListener('click', () => {
     function renderGuide() {
         if (guideAlpha <= 0.01 || guideText === '') return;
         ctx.save(); ctx.globalAlpha=guideAlpha; ctx.font='14px "Rajdhani",sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-        ctx.fillStyle='rgba(255,0,255,0.85)'; ctx.shadowBlur=6; ctx.shadowColor='rgba(255,0,255,0.3)';
+        ctx.fillStyle='rgba(0,255,255,0.85)'; ctx.shadowBlur=6; ctx.shadowColor='rgba(0,255,255,0.3)';
         ctx.fillText(guideText, CANVAS_W/2, 20); ctx.restore(); ctx.shadowBlur=0;
     }
 
@@ -737,8 +545,8 @@ document.addEventListener('click', () => {
         ctx.save(); ctx.globalAlpha=Math.min(1,fillAlpha);
         const path = createHeartPath(OUTER_SCALE);
         const g = ctx.createRadialGradient(HEART_CX-5,HEART_CY-12,8,HEART_CX,HEART_CY,68);
-        g.addColorStop(0,'#ff00ff'); g.addColorStop(0.6,'#7b68ee'); g.addColorStop(1,'#4a2d7a');
-        ctx.fillStyle=g; ctx.shadowBlur=20; ctx.shadowColor='rgba(255,0,255,0.5)'; ctx.fill(path); ctx.restore(); ctx.shadowBlur=0;
+        g.addColorStop(0,'#00ffff'); g.addColorStop(0.6,'#7b68ee'); g.addColorStop(1,'#4a2d7a');
+        ctx.fillStyle=g; ctx.shadowBlur=20; ctx.shadowColor='rgba(0,255,255,0.5)'; ctx.fill(path); ctx.restore(); ctx.shadowBlur=0;
     }
 
     function renderParticles() {
@@ -776,10 +584,14 @@ document.addEventListener('click', () => {
         progress = 0; completed = false; fillAlpha = 0; completionDelayFrames = 0;
         particles = []; guideText = ''; guideAlpha = 0; guideTimer = 0;
         overlay.classList.remove('visible');
-        showGuide("Trace the heart's outline", 120);
+        showGuide("Trace the outline", 120);
     }
 
-    redrawBtn.addEventListener('click', resetAll);
+    redrawBtn.addEventListener('click', () => {
+        if (progress > 0 && !confirm('确定要重画吗？当前进度将丢失。')) return;
+        resetAll();
+    });
+
     continueBtn.addEventListener('click', () => {
         overlay.classList.remove('visible');
         for (let i = 0; i < 15; i++) spawnParticle();
@@ -787,7 +599,7 @@ document.addEventListener('click', () => {
 
     window.HeartDrawModule = { reset: resetAll, getProgress: () => progress, isCompleted: () => completed };
 
-    showGuide("Trace the heart's outline", 150);
+    showGuide("Trace the outline", 150);
     animate();
 })();
 
